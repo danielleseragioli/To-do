@@ -36,8 +36,6 @@ class TableViewController: UITableViewController {
                     if !textNewTaskTitle.isEmpty {
                         self.tasks.append(textNewTaskTitle)
                         self.tableView.insertRows(at: [IndexPath(row: self.tasks.count-1, section: 0)], with: .automatic)
-                        self.tableView.reloadData()
-                        
                         UserDefaults.standard.setValue(self.tasks, forKey: "tasksKey")
                     }
                 }
@@ -67,7 +65,31 @@ class TableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        // tirar a marcação da célula:
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        // garantir que a célula existe:
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        
+        // adicionar checkmark nessa célula que existe:
+        if cell.accessoryType == .none {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let contextualAction = UIContextualAction(style: .destructive, title: "Excluir") { (action, view, true) in
+            self.tasks.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            UserDefaults.standard.setValue(self.tasks, forKey: "tasksKey")
+        }
+        
+        let actionsSwipe = UISwipeActionsConfiguration(actions: [contextualAction])
+        return actionsSwipe
     }
 
     
