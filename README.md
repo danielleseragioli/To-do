@@ -1,6 +1,6 @@
 # To-do
 
-<p> To-do is an app that allows the user to create a to-do list. </p> 
+<p> To-do é um aplicativo que permite a criação de uma Lista de Tarefas <br> e que utiliza o User Defaults para a persistência de dados. </p> 
 <br>
 
 
